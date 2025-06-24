@@ -29,7 +29,7 @@ pip install -e .
 
 cd scribe-ui
 
-npm run build
+npm i && npm run build
 ```
 
 ## Running

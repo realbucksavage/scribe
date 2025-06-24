@@ -66,9 +66,9 @@ app.include_router(meetings_router)
 
 frontend_path = os.path.join(os.path.dirname(__name__), "scribe-ui", "build")
 app.mount(
-    "/static",
-    StaticFiles(directory=os.path.join(frontend_path, "static")),
-    name="static",
+    "/",
+    StaticFiles(directory=frontend_path, html=True),
+    name="frontend",
 )
 
 
