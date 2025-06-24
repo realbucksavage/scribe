@@ -4,6 +4,7 @@ The Scribe master server.
 
 __version__ = "1.0.0"
 
+
 def run_server():
     """
     Starts the development server.
@@ -13,3 +14,7 @@ def run_server():
     import uvicorn
 
     uvicorn.run(scribe.server.app, host="0.0.0.0", port=8080)
+
+
+if __name__ == "__main__":
+    run_server()

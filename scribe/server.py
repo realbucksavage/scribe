@@ -1,10 +1,13 @@
 import logging
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.responses import FileResponse
+from starlette.staticfiles import StaticFiles
 
-from scribe_config import create_mongo_connection
+from scribe_config import create_mongo_connection, create_rabbit_connection
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -13,7 +16,7 @@ exchange_name = "scribe-commands"
 
 
 async def init_rabbitmq_connection(a: FastAPI):
-    a.state.rabbitmq_conn = await create_mongo_connection()
+    a.state.rabbitmq_conn = await create_rabbit_connection()
     a.state.rabbitmq_chan = await app.state.rabbitmq_conn.channel()
 
     logger.info("RabbitMQ connection established")
@@ -60,3 +63,15 @@ app.add_middleware(
 )
 
 app.include_router(meetings_router)
+
+frontend_path = os.path.join(os.path.dirname(__name__), "scribe-ui", "build")
+app.mount(
+    "/static",
+    StaticFiles(directory=os.path.join(frontend_path, "static")),
+    name="static",
+)
+
+
+@app.get("/{full_path:path}")
+async def serve_index(full_path: str):
+    return FileResponse(os.path.join(frontend_path, "index.html"))

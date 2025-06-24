@@ -7,6 +7,7 @@ A live recoding translater/transcriber.
 ### Dependencies
 
 - Python >= 3.11
+- NodeJS
 - MongoDB
 - RabbitMQ
 - A microphone
@@ -25,6 +26,10 @@ python -m venv .venv
 . .venv/bin/activate
 
 pip install -e .
+
+cd scribe-ui
+
+npm run build
 ```
 
 ## Running
